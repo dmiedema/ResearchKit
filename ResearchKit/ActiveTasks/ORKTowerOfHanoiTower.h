@@ -39,6 +39,6 @@
 
 - (instancetype)initWithDisks:(NSArray *)disks;
 
-- (BOOL)recieveDiskFrom:(ORKTowerOfHanoiTower *)donorTower;
+- (BOOL)receiveDiskFrom:(ORKTowerOfHanoiTower *)donorTower;
 
 @end

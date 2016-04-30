@@ -1,21 +1,21 @@
 /*
  Copyright (c) 2015, James Cox. All rights reserved.
- 
+
  Redistribution and use in source and binary forms, with or without modification,
  are permitted provided that the following conditions are met:
- 
+
  1.  Redistributions of source code must retain the above copyright notice, this
  list of conditions and the following disclaimer.
- 
+
  2.  Redistributions in binary form must reproduce the above copyright notice,
  this list of conditions and the following disclaimer in the documentation and/or
  other materials provided with the distribution.
- 
+
  3.  Neither the name of the copyright holder(s) nor the names of any contributors
  may be used to endorse or promote products derived from this software without
  specific prior written permission. No license is granted to the trademarks of
  the copyright holders even if such marks are included in this software.
- 
+
  THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS "AS IS"
  AND ANY EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT LIMITED TO, THE
  IMPLIED WARRANTIES OF MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE
@@ -67,7 +67,7 @@ static const NSUInteger NumberOfTowers = 3;
     _towerOfHanoiCustomView.translatesAutoresizingMaskIntoConstraints = NO;
     self.activeStepView.activeCustomView = _towerOfHanoiCustomView;
     self.activeStepView.minimumStepHeaderHeight = ORKGetMetricForWindow(ORKScreenMetricMinimumStepHeaderHeightForTowerOfHanoiPuzzle, self.view.window);
-    
+
     [self setUpTowers];
     [self setUpTowerViews];
     [self reloadData];
@@ -85,14 +85,14 @@ static const NSUInteger NumberOfTowers = 3;
 
 - (void)updateViewConstraints {
     [super updateViewConstraints];
-    
+
     [NSLayoutConstraint deactivateConstraints:_variableConstraints];
     _variableConstraints = nil;
-    
+
     if (!_variableConstraints) {
         _variableConstraints = [NSMutableArray new];
     }
-    
+
     BOOL needCompactLayout =
     (self.traitCollection.horizontalSizeClass == UIUserInterfaceSizeClassCompact) &&
     (self.traitCollection.verticalSizeClass != UIUserInterfaceSizeClassCompact);
@@ -121,13 +121,13 @@ static const NSUInteger NumberOfTowers = 3;
 }
 
 #pragma mark - ORKTowerOfHanoiTowerViewDataSource
- 
+
 - (NSUInteger)numberOfDisksInTowerOfHanoiView:(ORKTowerOfHanoiTowerView *)towerView {
     NSInteger towerIndex = [_towerViews indexOfObject:towerView];
     ORKTowerOfHanoiTower *tower = _towers[towerIndex];
     return tower.disks.count;
 }
- 
+
 - (NSNumber *)towerOfHanoiView:(ORKTowerOfHanoiTowerView *)towerView diskAtIndex:(NSUInteger)index {
     NSInteger towerIndex = [_towerViews indexOfObject:towerView];
     ORKTowerOfHanoiTower *tower = _towers[towerIndex];
@@ -227,12 +227,12 @@ static const NSUInteger NumberOfTowers = 3;
 - (void)transferDiskFromTowerAtIndex:(NSInteger)donorTowerIndex toTowerAtIndex:(NSInteger)recipientTowerIndex {
     ORKTowerOfHanoiTower *donorTower = _towers[donorTowerIndex];
     ORKTowerOfHanoiTower *recipientTower = _towers[recipientTowerIndex];
-    if ([recipientTower recieveDiskFrom:donorTower]) {
+    if ([recipientTower receiveDiskFrom:donorTower]) {
         [self makeMoveFromTowerAtIndex:donorTowerIndex toTowerAtIndex:recipientTowerIndex];
     } else {
         NSNumber *donorSize = [self towerOfHanoiView:_towerViews[donorTowerIndex] diskAtIndex:0];
         NSNumber *recipientSize = [self towerOfHanoiView:_towerViews[recipientTowerIndex] diskAtIndex:0];
-        
+
         if (donorSize && recipientSize) {
             // Only announce if the both donor and recipient are valid
             NSString *invalidMoveAnnouncement = [NSString stringWithFormat:ORKLocalizedString(@"AX_TOWER_OF_HANOI_INVALID_MOVE_FORMAT", nil), donorSize.stringValue, recipientSize.stringValue];
@@ -290,7 +290,7 @@ static const NSUInteger NumberOfTowers = 3;
                                                            attribute:NSLayoutAttributeHeight
                                                           multiplier:1.0
                                                             constant:0.0]];
-    
+
     for (int index = 0 ; index < _towerViews.count ; index++) {
         [newConstraints addObject:[NSLayoutConstraint constraintWithItem:_towerViews[index]
                                                                attribute:NSLayoutAttributeWidth
@@ -314,7 +314,7 @@ static const NSUInteger NumberOfTowers = 3;
 - (NSArray *)regularConstraints {
     NSDictionary *views = @{ @"A" : _towerViews[0], @"B" : _towerViews[1], @"C" : _towerViews[2]};
     NSMutableArray *newConstraints = [NSMutableArray new];
-    
+
     [newConstraints addObjectsFromArray:
      [NSLayoutConstraint constraintsWithVisualFormat:@"V:|-[A]-|"
                                              options:(NSLayoutFormatOptions)0
@@ -335,7 +335,7 @@ static const NSUInteger NumberOfTowers = 3;
                                              options:(NSLayoutFormatOptions)0
                                              metrics:nil
                                                views:views]];
-    
+
     [newConstraints addObject:[NSLayoutConstraint constraintWithItem:_towerViews[0]
                                                            attribute:NSLayoutAttributeWidth
                                                            relatedBy:NSLayoutRelationEqual
@@ -350,7 +350,7 @@ static const NSUInteger NumberOfTowers = 3;
                                                            attribute:NSLayoutAttributeWidth
                                                           multiplier:1.0
                                                             constant:0.0]];
-    
+
     return newConstraints;
 }
 
